@@ -1,58 +1,57 @@
 (function () {
     var myConnector = tableau.makeConnector();
-
+    
     myConnector.getSchema = function (schemaCallback) {
         var cols = [{
-                id: "case_number",
-                dataType: tableau.dataTypeEnum.string
-            }, {
-                id: "reported_date",
-                dataType: tableau.dataTypeEnum.datetime
-            }, {
-                id: "offense_desc",
-                dataType: tableau.dataTypeEnum.string
-            }, {
-                id: "address",
-                dataType: tableau.dataTypeEnum.string
-            }, {
-                id: "common_name",
-                dataType: tableau.dataTypeEnum.string
-            }, {
-                id: "case_occured_from",
-                dataType: tableau.dataTypeEnum.datetime
-            }, {
-                id: "case_occured_through",
-                dataType: tableau.dataTypeEnum.datetime
-            }, {
-                id: "case_disposition",
-                dataType: tableau.dataTypeEnum.string
-            }, {
-                id: "geo_latitude",
-                dataType: tableau.dataTypeEnum.float
-            }, {
-                id: "geo_longitude",
-                dataType: tableau.dataTypeEnum.float
-            }, {
-                id: "campus_region",
-                dataType: tableau.dataTypeEnum.string
-            }
-        ];
+            id: "case_number",
+            dataType: tableau.dataTypeEnum.string
+        }, {
+            id: "reported_date",
+            dataType: tableau.dataTypeEnum.datetime
+        }, {
+            id: "offense_desc",
+            dataType: tableau.dataTypeEnum.string
+        }, {
+            id: "address",
+            dataType: tableau.dataTypeEnum.string
+        }, {
+            id: "common_name",
+            dataType: tableau.dataTypeEnum.string
+        }, {
+            id: "case_occured_from",
+            dataType: tableau.dataTypeEnum.datetime
+        }, {
+            id: "case_occured_through",
+            dataType: tableau.dataTypeEnum.datetime
+        }, {
+            id: "case_disposition",
+            dataType: tableau.dataTypeEnum.string
+        }, {
+            id: "geo_latitude",
+            dataType: tableau.dataTypeEnum.float
+        }, {
+            id: "geo_longitude",
+            dataType: tableau.dataTypeEnum.float
+        }, {
+            id: "campus_region",
+            dataType: tableau.dataTypeEnum.string
+        }
+    ];
     
-        var tableSchema = {
-            id: "uwpdData",
-            alias: "University of Washington's Crime Data",
-            columns: cols
-        };
+    var tableSchema = {
+        id: "uwpdData",
+        alias: "University of Washington's Crime Data",
+        columns: cols
+    };
     
-        schemaCallback([tableSchema]);
+    schemaCallback([tableSchema]);
     };
 
     myConnector.getData = function (table, doneCallback) {
-        $.getJSON("http://localhost:8889/128.208.173.241/?api_key=REPLACE_KEY_HERE", function(resp) {
-
-            var feat = resp,
-                tableData = [];
-    
+        var endpoint = "http://localhost:8889/128.208.173.241/?api_key=YourAPIKEY";
+        $.getJSON(endpoint, function(resp) {
+            var feat = resp, tableData = [];
+            
             //Iterate over the JSON object
             for (var i = 0, len = feat.length; i < len; i++) {
                 tableData.push({
@@ -69,7 +68,7 @@
                     "campus_region": feat[i].campus_region
                 });
             }
-    
+            
             table.appendRows(tableData);
             doneCallback();
         });
@@ -83,4 +82,4 @@
             tableau.submit();
         });
     });
-})();
+})(); 
